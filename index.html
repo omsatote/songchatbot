@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> SonicInk - Discover Music & Lyrics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #b46efb, #d677e3);
+        }
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .chatbot-container {
+            transition: all 0.3s ease;
+            transform: translateY(100%);
+        }
+        .chatbot-container.open {
+            transform: translateY(0);
+        }
+        .lyrics-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        .lyrics-container.open {
+            max-height: 1000px;
+        }
+        .genre-pill {
+            transition: all 0.2s ease;
+        }
+        .genre-pill:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-music text-3xl"></i>
+                    <h1 class="text-2xl font-bold">SonicInk</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" class="hover:text-gray-200 font-medium">Home</a>
+                    <a href="#" class="hover:text-gray-200 font-medium">Songs</a>
+                    <a href="#" class="hover:text-gray-200 font-medium">Lyrics</a>
+                    <a href="#" class="hover:text-gray-200 font-medium">Genres</a>
+                    <a href="#" class="hover:text-gray-200 font-medium">About</a>
+                </div>
+                <button class="md:hidden text-2xl" id="mobile-menu-button">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="md:hidden hidden bg-white shadow-md" id="mobile-menu">
+        <div class="flex flex-col space-y-3 p-4">
+            <a href="#" class="hover:text-purple-600 font-medium">Home</a>
+            <a href="#" class="hover:text-purple-600 font-medium">Songs</a>
+            <a href="#" class="hover:text-purple-600 font-medium">Lyrics</a>
+            <a href="#" class="hover:text-purple-600 font-medium">Genres</a>
+            <a href="#" class="hover:text-purple-600 font-medium">About</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Discover Your Next Favorite Song</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Explore millions of songs across all genres, find lyrics, and get personalized recommendations.</p>
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Popular Songs Section -->
+        <section class="mb-16">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Popular Songs Right Now</h2>
+                <a href="https://www.youtube.com/watch?v=JGwWNGJdvx8&list=RDQMmCB4pDdocIs&start_radio=1&ab_channel=EdSheeran" class="text-purple-600 font-medium hover:underline">View All</a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Song Card 1 -->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/fHI8X4OXluQ/maxresdefault.jpg" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                       <a href="https://youtu.be/4NRXx6U8ABQ?si=15v3ZCFzPyiTW3PM"class="font-bold text-lg mb-1">Blinding Lights </a>
+                        <p class="text-gray-600 mb-3">The Weeknd</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">3:20</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="1">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="1">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                                I've been tryna call
+                                I've been on my own for long enough
+                                Maybe you can show me how to love, maybe
+                                I'm going through withdrawals
+                                You don't even have to do too much
+                                You can turn me on with just a touch, baby
+                                
+                                [Chorus]
+                                I look around and
+                                Sin City's cold and empty (Oh)
+                                No one's around to judge me (Oh)
+                                I can't see clearly when you're gone
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Song Card 2 -->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/zXiHqCvCy70/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLChozWRhWBtSfYZAKXwLRdMTSCsdw" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                       <a href="https://youtu.be/TUVcZfQe-Kw?si=padZ_I448_N8FMw7" class="font-bold text-lg mb-1">Levitating</a>
+                        <p class="text-gray-600 mb-3">Dua Lipa</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">3:45</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="2">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="2">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                                If you wanna run away with me, I know a galaxy
+                                And I can take you for a ride
+                                I had a premonition that we fell into a rhythm
+                                Where the music don't stop for life
+                                
+                                [Chorus]
+                                You want me, I want you, baby
+                                My sugarboo, I'm levitating
+                                The Milky Way, we're renegading
+                                Yeah, yeah, yeah, yeah
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--sound card 3-->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/JgDNFQ2RaLQ/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBbX7inrs24XR172cxCg1IrFZA8tw" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                       <a href="https://www.youtube.com/watch?v=JgDNFQ2RaLQ&ab_channel=EdSheeran" class="font-bold text-lg mb-1">sapphire</a>
+                        <p class="text-gray-600 mb-3">Ed Sheeran</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">3:45</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="3">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="3">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                                You're glowing
+You colour and fracture the light
+You can't help but shine
+And I know that
+You carry the world on your back
+But look at you tonight
+
+[Pre-Chorus: Ed Sheeran]
+The lights, your face, your eyes
+Exploding like fireworks in the sky
+Sapphire
+
+[Chorus: Ed Sheeran]
+Touching on your body while you're pushing on me
+Don't you end the party, I could do this all week
+We'll be dancing till the morning, go to bed, we won't sleep
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ (Sapphire)
+Touching on your body while you're pushing on me
+Don't you end the party, I could do this all week
+We'll be dancing till the morning, go to bed, we won't sleep
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ
+
+[Verse 2: Ed Sheeran]
+Look what we found, Karma reached out
+Into our hearts and pulled us to our feet now
+You know, the truth is we could disappear
+Anywhere, as long as I got you there
+When the sun dies, till the day shines
+When I'm with you, there's not enough time
+You are my spring flower, watching you bloom, wow
+We are surrounded, but I can only see
+See Ed Sheeran Live
+Get tickets as low as $102
+You might also like
+Ed Sheeran - Sapphire (Romanized)
+Genius Romanizations
+Ed Sheeran - Sapphire (English Translation)
+Genius English Translations
+Ed Sheeran - Sapphire (हिंदी अनुवाद)
+Genius Hindi Translations (हिंदी अनुवाद)
+[Pre-Chorus: Ed Sheeran]
+The lights, your face, your eyes
+Exploding like fireworks in the sky
+Sapphire
+
+[Chorus: Ed Sheeran]
+Touching on your body while you're pushing on me
+Don't you end the party, I could do this all week
+We'll be dancing till the morning, go to bed, we won't sleep
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ (Sapphire)
+Touching on your body while you're pushing on me
+Don't you end the party, I could do this all week
+We'll be dancing till the morning, go to bed, we won't sleep
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ (Sapphire)
+
+[Bridge: Arijit Singh, Ed Sheeran, Both]
+(मेहरूनी दो नैन लुभाए)
+(चाँदनी चम-चम चमकाए) You're glowing
+(ਨੂਰ ਦਾ ਮੈਨੂੰ ਘੁੱਟ ਪਿਲਾਏ)
+(ਜਿੰਦੜੀ ਬਣ ਜਾਏ)
+You're glowing (ਅੰਬਰਾਂ ਦੀ ਤੂੰ ਝਾਲਰ ਪਾਏ)
+You colour and fracture the light (ਬਦਲ਼ਾਂ ਦੇ ਲੱਠੇ ਸੂਟ ਬਣਾਏ)
+But look at you tonight (ਕਿਰਣਾਂ ਨੂੰ ਰੰਗ-ਰੂਪ ਛਡਾਏ)
+(ਮੋਰਣੀ ਬਣ ਜਾਏ) Sapphire
+ਪਲਕਾਂ ਉਠਾਵਤੇ ਹਨੇਰੇ ਘਟਦੇ
+ਉਂਗਲਾ’ਚ ਪਾਕੇ ਤੂੰ ਧਨਕ ਫਿਰਦੀ
+ਕਿਵੇਂ ਰੱਬ ਨੇ ਦੋ ਨੈਣਾਂ ਉੱਤੇ ਨੀਲਮ ਜੜੇ?
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ (Sapphire)
+[Chorus: Ed Sheeran]
+Touching on your body while you're pushing on me
+Don't you end the party, I could do this all week
+We'll be dancing till the morning, go to bed, we won't sleep
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ (Sapphire)
+Touching on your body while you're pushing on me (The lights, your face, your eyes)
+Don't you end the party, I could do this all week (Exploding)
+We'll be dancing till the morning, go to bed, we won't sleep (Like fireworks in the sky)
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ (Sapphire)
+Touching on your body while you're pushing on me (The lights, your face, your eyes)
+Don't you end the party, I could do this all week (Exploding)
+We'll be dancing till the morning, go to bed, we won't sleep (Like fireworks in the sky)
+ਚਮ-ਚਮ ਚਮਕੇ ਸਿਤਾਰੇ ਵਰਗੀ (Sapphire)
+
+[Outro: Ed Sheeran]
+The lights, your face, your eyes
+Exploding like fireworks in the sky
+Sapphire
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--sound card 4-->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/CRw58414N9o/maxresdefault.jpg" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                       <a href="https://www.youtube.com/watch?v=kPa7bsKwL-c&ab_channel=LadyGagaVEVO" class="font-bold text-lg mb-1">Die With A Smile</a>
+                        <p class="text-gray-600 mb-3">Lady Gaga, Bruno Mars</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">3:45</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="4">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="4">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                                Ooh
+I, I just woke up from a dream
+Where you and I had to say goodbye
+And I don't know what it all means
+But since I survived, I realized
+Wherever you go, that's where I'll follow
+Nobody's promised tomorrow
+So I'ma love you every night like it's the last night
+Like it's the last night
+If the world was ending, I'd wanna be next to you
+If the party was over and our time on Earth was through
+I'd wanna hold you just for a while and die with a smile
+If the world was ending, I'd wanna be next to you
+Ooh
+Ooh, lost, lost in the words that we scream
+I don't even wanna do this anymore
+'Cause you already know what you mean to me
+And our love's the only war worth fighting for
+Wherever you go, that's where I'll follow
+Nobody's promised tomorrow
+So I'ma love you every night like it's the last night
+Like it's the last night
+If the world was ending, I'd wanna be next to you
+If the party was over and our time on Earth was through
+I'd wanna hold you just for a while and die with a smile
+If the world was ending, I'd wanna be next to you
+Right next to you
+Next to you
+Right next to you
+Oh-oh, oh
+If the world was ending, I'd wanna be next to you
+If the party was over and our time on Earth was through
+I'd wanna hold you just for a while and die with a smile
+If the world was ending, I'd wanna be next to you
+If the world was ending, I'd wanna be next to you
+Ooh
+I'd wanna be next to you
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--sound card 5-->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/kJQP7kiw5Fk/maxresdefault.jpg" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                       <a href="https://www.youtube.com/watch?v=kJQP7kiw5Fk&ab_channel=LuisFonsiVEVO" class="font-bold text-lg mb-1">Despacito</a>
+                        <p class="text-gray-600 mb-3">Luis Fonsi-Daddy Yankee</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">3:45</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="5">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="5">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                                ¡Ay!
+Fonsi, DY
+Oh, oh no, oh no (oh)
+Hey yeah
+Diridiri, dirididi Daddy
+Go!
+Sí, sabes que ya llevo un rato mirándote
+Tengo que bailar contigo hoy (DY)
+Vi que tu mirada ya estaba llamándome
+Muéstrame el camino que yo voy
+Oh, tú, tú eres el imán y yo soy el metal
+Me voy acercando y voy armando el plan
+Solo con pensarlo se acelera el pulso (oh yeah)
+Ya, ya me estás gustando más de lo normal
+Todos mis sentidos van pidiendo más
+Esto hay que tomarlo sin ningún apuro
+Despacito
+Quiero respirar tu cuello despacito
+Deja que te diga cosas al oído
+Para que te acuerdes si no estás conmigo
+Despacito
+Quiero desnudarte a besos despacito
+Firmar las paredes de tu laberinto
+Y hacer de tu cuerpo todo un manuscrito (sube, sube, sube)
+(Sube, sube) Oh
+Quiero ver bailar tu pelo
+Quiero ser tu ritmo (uh oh, uh oh)
+Que le enseñes a mi boca (uh oh, uh oh)
+Tus lugares favoritos (favoritos, favoritos baby)
+Déjame sobrepasar tus zonas de peligro (uh oh, uh oh)
+Hasta provocar tus gritos (uh oh, uh oh)
+Y que olvides tu apellido (dirididi Daddy)
+Yo sé que estás pensándolo (eh)
+Llevo tiempo intentándolo (eh)
+Mami, esto es dando y dándolo
+Sabes que tu corazón conmigo te hace bam bam
+Sabe que esa beba 'tá buscando de mi bam bam
+Ven prueba de mi boca para ver cómo te sabe
+Quiero, quiero, quiero ver cuánto amor a ti te cabe
+Yo no tengo prisa, yo me quiero dar el viaje
+Empezamo' lento, después salvaje
+Pasito a pasito, suave suavecito
+Nos vamos pegando poquito a poquito
+Cuando tú me besas con esa destreza
+Veo que eres malicia con delicadeza
+Pasito a pasito, suave suavecito
+Nos vamos pegando, poquito a poquito (oh oh)
+Y es que esa belleza es un rompecabezas (oh no)
+Pero pa' montarlo aquí tengo la pieza (slow, oh yeah)
+Despacito (yeh, yo)
+Quiero respirar tu cuello despacito (yo)
+Deja que te diga cosas al oído (yo)
+Para que te acuerdes si no estás conmigo
+Despacito
+Quiero desnudarte a besos despacito (yeh)
+Firmar las paredes de tu laberinto
+Y hacer de tu cuerpo todo un manuscrito (sube, sube, sube)
+(Sube, sube) Oh
+Quiero ver bailar tu pelo
+Quiero ser tu ritmo (uh oh, uh oh)
+Que le enseñes a mi boca (uh oh, uh oh)
+Tus lugares favoritos (favoritos, favoritos baby)
+Déjame sobrepasar tus zonas de peligro (uh oh, uh oh)
+Hasta provocar tus gritos (uh oh, uh oh)
+Y que olvides tu apellido
+Despacito
+Vamo' a hacerlo en una playa en Puerto Rico
+Hasta que las olas griten "Ay, bendito"
+Para que mi sello se quede contigo (báilalo)
+Pasito a pasito, suave suavecito (hey yeah, yeah)
+Nos vamos pegando, poquito a poquito (oh no)
+Que le enseñes a mi boca (uh oh, uh oh)
+Tus lugares favoritos (favoritos, favoritos baby)
+Pasito a pasito, suave suavecito
+Nos vamos pegando, poquito a poquito
+Hasta provocar tus gritos (eh-oh) (Fonsi)
+Y que olvides tu apellido (DY)
+Despacito
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Song Card 6 -->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/kTJczUoc26U/sddefault.jpg?v=60e73455" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <a href="https://youtu.be/kTJczUoc26U?si=Xx-e-vqDtjtrDZPw" class="font-bold text-lg mb-1">Stay</a>
+                        <p class="text-gray-600 mb-3">The Kid LAROI, Justin Bieber</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">2:21</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="11">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="11">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                                I do the same thing I told you that I never would
+                                I told you I'd change, even when I knew I never could
+                                I know that I can't find nobody else as good as you
+                                I need you to stay, need you to stay, hey
+                                
+                                [Chorus]
+                                I get drunk, wake up, I'm wasted still
+                                I realize the time that I wasted here
+                                I feel like you can't feel the way I feel
+                                Oh, I'll be fucked up if you can't be right here
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--sound card 7-->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/pRpeEdMmmQ0/maxresdefault.jpg" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                       <a href="https://www.youtube.com/watch?v=pRpeEdMmmQ0&ab_channel=shakiraVEVO" class="font-bold text-lg mb-1"> Waka Waka</a>
+                        <p class="text-gray-600 mb-3">Shakira</p>
+                        <div class="flex justify-between items-center"> 
+                            <span class="text-sm text-gray-500">3:45</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="9">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="9">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                               Ohh-ehh
+Uh, zangalewa (Otra, otra)
+Uh, zangalewa (Otra, otra)
+Uh, zangalewa (Otra, otra)
+Uh, zangalewa (Otra, otra)
+
+[Verse 1: Shakira]
+You're a good soldier, choosing your battles
+Pick yourself up and dust yourself off, get back in the saddle
+You're on the front line, everyone's watching
+You know it's serious, we're getting closer, this isn't over
+
+[Pre-Chorus: Shakira]
+The pressure's on, you feel it
+But you got it all, believe it
+When you fall get up, oh-oh
+And if you fall get up, eh-eh
+Zamina-mina, zangalewa?
+'Cause this is Africa
+
+[Chorus: Shakira]
+Zamina-mina, hé-hé
+Waka, waka, hé-hé
+Zamina-mina, zangalewa?
+This time for Africa
+See Shakira Live
+Get tickets as low as $74
+You might also like
+So Long, London
+Taylor Swift
+The Tortured Poets Department
+Taylor Swift
+But Daddy I Love Him
+Taylor Swift
+[Instrumental Break]
+
+[Verse 2: Shakira]
+Listen to your God, this is our motto
+Your time to shine, don't wait in line y vamos por todo
+People are raising their expectations
+Go on and feed 'em, this is your moment, no hesitations
+
+[Pre-Chorus: Shakira]
+Today's your day, I feel it
+You paved the way, believe it
+If you get down, get up, oh-oh
+When you get down, get up, eh-eh
+Zamina-mina, zangalewa?
+This time for Africa
+
+[Chorus: Shakira]
+Zamina-mina, hé-hé
+Waka, waka, hé-hé
+Zamina-mina, zangalewa?
+Anawa, ha-ha
+Zamina-mina, hé-hé
+Waka, waka, hé-hé
+Zamina-mina, zangalewa?
+This time for Africa
+[Verse 3: Zolani]
+Awabuye lamajoni ipikipiki mama wa A to Z
+Bathi susa lamajoni ipikipiki mama from East to West
+Bathi waka-waka, mah, hé-hé, waka-waka, mah, hé-hé
+Zonk' izizwe mazibuye, 'cause this is Africa
+
+[Bridge]
+Zamina-mina
+Anawa, ha-ha
+Zamina-mina
+Zamina-mina
+Anawa, ha-ha
+
+[Chorus: Shakira]
+Zamina-mina, hé-hé
+Waka, waka, hé-hé
+Zamina-mina, zangalewa?
+Anawa, ha-ha
+Zamina-mina, hé-hé
+Waka, waka, hé-hé
+Zamina-mina, zangalewa?
+This time for Africa
+
+[Post-Chorus: Shakira]
+Django, hé-hé
+Django, hé-hé
+Zamina-mina, zangalewa?
+Anawa, ha-ha
+Django, hé-hé
+Django, hé-hé
+Zamina-mina, zangalewa?
+Anawa, ha-ha
+[Outro: Shakira]
+This time for Africa
+This time for Africa
+We're all Africa (Zama qhela)
+We're all Africa (Kwela, kwela)
+(Zama qhela)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Song Card 8-->
+                <div class="song-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY1Vz4MkugdAb_G6LCO4PtBQVf58mEVGPDvnp2Rc1OGHSMVN-e_uXb38RU6zjbFBRIoxw&usqp=CAU" alt="Song Cover" class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                            <button class="bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center hover:bg-purple-100">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <a href="https://youtu.be/gNi_6U5Pm_o?si=e_zqIi7l6d7tKee7" class="font-bold text-lg mb-1">Good 4 U</a>
+                        <p class="text-gray-600 mb-3">Olivia Rodrigo</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">2:58</span>
+                            <button class="lyrics-toggle text-purple-600 text-sm font-medium hover:underline" data-song="90">View Lyrics</button>
+                        </div>
+                    </div>
+                    <!-- Lyrics Container -->
+                    <div class="lyrics-container bg-gray-50 px-4" data-song="90">
+                        <div class="py-4">
+                            <h4 class="font-bold mb-2">Lyrics:</h4>
+                            <p class="text-gray-700 whitespace-pre-line">
+                                Well, good for you, I guess you moved on really easily
+                                You found a new girl and it only took a couple weeks
+                                Remember when you said that you wanted to give me the world?
+                                And good for you, I guess that you've been working on yourself
+                                
+                                [Chorus]
+                                Well, good for you, you look happy and healthy
+                                Not me, if you ever cared to ask
+                                Good for you, you're doing great out there without me, baby
+                                Like a damn sociopath
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Genre Explorer Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Explore by Genre</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <a href="https://open.spotify.com/playlist/2oaHeIsP2LTQlPjBuVtjkt" class="genre-pill bg-purple-100 text-purple-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-purple-200">Pop</a>
+                <a href="https://open.spotify.com/playlist/39E8TDfPmeIHMAOPHB6THD" class="genre-pill bg-blue-100 text-blue-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-blue-200">Rock</a>
+                <a href="https://open.spotify.com/playlist/4mn7A7i3b3SD3ABMyBGkL0" class="genre-pill bg-red-100 text-red-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-red-200">Hip Hop</a>
+                <a href="https://open.spotify.com/playlist/37i9dQZF1DX0SPPXJeeVcg" class="genre-pill bg-green-100 text-green-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-green-200">R&B</a>
+                <a href="https://open.spotify.com/playlist/37i9dQZF1DX7aUUBCKwo4Y" class="genre-pill bg-yellow-100 text-yellow-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-yellow-200">Country</a>
+                <a href="https://open.spotify.com/playlist/5naKPTSE4Y1OI5YE97KvoO" class="genre-pill bg-indigo-100 text-indigo-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-indigo-200">Electronic</a>
+                <a href="https://open.spotify.com/playlist/37i9dQZF1DXbITWG1ZJKYt" class="genre-pill bg-pink-100 text-pink-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-pink-200">Jazz</a>
+                <a href="https://open.spotify.com/album/5tX4GrnMulZfRUN49zxkW1" class="genre-pill bg-gray-100 text-gray-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-gray-200">Classical</a>
+                <a href="https://open.spotify.com/playlist/2BIs0HmV0ibaszuo5Wrj3n" class="genre-pill bg-teal-100 text-teal-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-teal-200">Khandesh</a>
+                <a href="https://open.spotify.com/playlist/37i9dQZF1DX0XUfTFmNBRM" class="genre-pill bg-orange-100 text-orange-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-orange-200">India song</a>
+                <a href="https://open.spotify.com/playlist/37i9dQZF1DX84EApEEEkUc" class="genre-pill bg-fuchsia-100 text-fuchsia-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-fuchsia-200">Marathi song</a>
+                <a href="https://open.spotify.com/playlist/37i9dQZF1DX1w6dPRcGVZq" class="genre-pill bg-amber-100 text-amber-800 rounded-full py-2 px-4 text-center font-medium cursor-pointer hover:bg-amber-200">Bojpuri song</a>
+            </div>
+        </section>
+
+        <!-- Personalized Recommendations -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Recommended For You</h2>
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 mb-6 md:mb-0">
+                       <img src="https://images.unsplash.com/photo-1586362980607-97e9e8ff8685?q=80&w=1082&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Personalized Playlist" class="rounded-lg w-full"></a>
+                    </div>
+                    <div class="md:w-2/3 md:pl-8">
+                        <h3 class="text-2xl font-bold mb-4">Your Daily Mix</h3>
+                        <p class="text-gray-600 mb-6">Based on your listening history, we've curated these songs just for you. Discover new tracks that match your taste.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-music text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Save Your Tears</p>
+                                    <p class="text-sm text-gray-500">The Weeknd</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-music text-blue-600"></i>
+                                </div>
+                                <div>
+                                   <a href="https://open.spotify.com/search/Don't%20Start%20Now"  class="font-medium">Don't Start Now</a>
+                                    <p class="text-sm text-gray-500">Dua Lipa</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-music text-red-600"></i>
+                                </div>
+                                <div>
+                                    <a href="https://open.spotify.com/search/Montero" class="font-medium">Montero</a>
+                                    <p class="text-sm text-gray-500">Lil Nas X</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-music text-green-600"></i>
+                                </div>
+                                <div>
+                                    <a href="https://open.spotify.com/search/Peaches" class="font-medium">Peaches</a>
+                                    <p class="text-sm text-gray-500">Justin Bieber</p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lyrics Search Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-xl shadow-md p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Find Lyrics</h2>
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                    
+                </div>
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold mb-4">Recent Searches</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="https://genius.com/The-weeknd-blinding-lights-lyrics" class="bg-gray-100 text-gray-800 rounded-full px-4 py-1 text-sm">Blinding Lights lyrics</a>
+                        <a href="https://genius.com/artists/Taylor-swift" class="bg-gray-100 text-gray-800 rounded-full px-4 py-1 text-sm">Taylor Swift songs</a>
+                        <a href="https://genius.com/Genius-users-antimonyorchid-annotated" class="bg-gray-100 text-gray-800 rounded-full px-4 py-1 text-sm">Bohemian Rhapsody full lyrics</a>
+                        <a href="https://open.spotify.com/album/7aJuG4TFXa2hmE4z1yxc3n" class="bg-gray-100 text-gray-800 rounded-full px-4 py-1 text-sm">Billie Eilish new album</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Chatbot Button -->
+    <div class="fixed bottom-6 right-6">
+        <button id="chatbot-button" class="bg-purple-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:bg-purple-700 transition">
+            <i class="fas fa-robot text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div class="chatbot-container fixed bottom-0 right-0 w-full md:w-96 h-96 bg-white shadow-xl rounded-t-lg border border-gray-200 overflow-hidden">
+        <div class="bg-purple-600 text-white p-4 flex justify-between items-center">
+            <h3 class="font-bold">Music Genie</h3>
+            <button id="close-chatbot" class="text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4 h-64 overflow-y-auto" id="chatbot-messages">
+            <div class="mb-4">
+                <div class="bg-gray-100 rounded-lg p-3 inline-block max-w-xs">
+                    <p>Hi there! I'm your music assistant. How can I help you today? You can ask for song recommendations, lyrics, or information about genres.</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex">
+                <input type="text" placeholder="Type your message..." class="flex-grow px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none" id="chatbot-input">
+                <button class="bg-purple-600 text-white px-4 py-2 rounded-r-full hover:bg-purple-700" id="send-message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="mt-2 text-xs text-gray-500">
+                Try: "Recommend pop songs" or "Show me lyrics for Blinding Lights"
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MelodyVerse</h3>
+                    <p class="text-gray-400">Discover, explore, and enjoy music from all around the world. Find lyrics, get recommendations, and expand your musical horizons.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Popular Songs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Top Artists</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">New Releases</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Genres</h4>
+                    <ul class="space-y-2">
+                        <li><a href="https://open.spotify.com/playlist/2oaHeIsP2LTQlPjBuVtjkt" class="text-gray-400 hover:text-white">Pop</a></li>
+                        <li><a href="https://open.spotify.com/playlist/39E8TDfPmeIHMAOPHB6THD" class="text-gray-400 hover:text-white">Rock</a></li>
+                        <li><a href="https://open.spotify.com/playlist/4mn7A7i3b3SD3ABMyBGkL0" class="text-gray-400 hover:text-white">Hip Hop</a></li>
+                        <li><a href="https://open.spotify.com/playlist/5naKPTSE4Y1OI5YE97KvoO" class="text-gray-400 hover:text-white">Electronic</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/tseriesmusic/" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-facebook"></i></a>
+                        <a href="https://x.com/TSeries/highlights" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/tseries.official/?hl=en" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="https://open.spotify.com/" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-spotify"></i></a>
+                    </div>
+                    <p class="text-gray-400 mt-4">Subscribe to our newsletter</p>
+                    <div class="flex mt-2">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 text-gray-800 rounded-l-full w-full">
+                        <button class="bg-purple-600 text-white px-4 py-2 rounded-r-full"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 MelodyVerse. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Lyrics toggle
+        document.querySelectorAll('.lyrics-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const songId = this.getAttribute('data-song');
+                const lyricsContainer = document.querySelector(`.lyrics-container[data-song="${songId}"]`);
+                lyricsContainer.classList.toggle('open');
+                
+                // Update button text
+                if (lyricsContainer.classList.contains('open')) {
+                    this.textContent = 'Hide Lyrics';
+                } else {
+                    this.textContent = 'View Lyrics';
+                }
+            });
+        });
+
+        // Chatbot toggle
+        const chatbotButton = document.getElementById('chatbot-button');
+        const chatbotContainer = document.querySelector('.chatbot-container');
+        const closeChatbot = document.getElementById('close-chatbot');
+
+        chatbotButton.addEventListener('click', function() {
+            chatbotContainer.classList.toggle('open');
+        });
+
+        closeChatbot.addEventListener('click', function() {
+            chatbotContainer.classList.remove('open');
+        });
+
+        // Chatbot functionality
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const sendMessage = document.getElementById('send-message');
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'mb-4';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = isUser 
+                ? 'bg-purple-100 text-purple-800 rounded-lg p-3 inline-block max-w-xs float-right clear-both' 
+                : 'bg-gray-100 rounded-lg p-3 inline-block max-w-xs';
+            
+            messageContent.textContent = text;
+            messageDiv.appendChild(messageContent);
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        sendMessage.addEventListener('click', function() {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                chatbotInput.value = '';
+                
+                // Simple bot responses
+                setTimeout(() => {
+                    if (message.toLowerCase().includes('recommend') || message.toLowerCase().includes('suggestion')) {
+                        if (message.toLowerCase().includes('pop')) {
+                            addMessage("Based on your interest in pop, I recommend: 'Dance Monkey' by Tones and I, 'Watermelon Sugar' by Harry Styles, and 'Don't Start Now' by Dua Lipa.");
+                        } else if (message.toLowerCase().includes('rock')) {
+                            addMessage("Great choice! Check out these rock songs: 'Sweet Child O' Mine' by Guns N' Roses, 'Bohemian Rhapsody' by Queen, and 'Smells Like Teen Spirit' by Nirvana.");
+                        } else {
+                            addMessage("Here are some popular recommendations: 'Blinding Lights' by The Weeknd, 'Levitating' by Dua Lipa, and 'Stay' by The Kid LAROI & Justin Bieber.");
+                        }
+                    } else if (message.toLowerCase().includes('lyric') || message.toLowerCase().includes('lyrics')) {
+                        addMessage("I can help you find lyrics! Please specify the song title and artist for accurate results. For example: 'Show me lyrics for Blinding Lights by The Weeknd'");
+                    } else if (message.toLowerCase().includes('genre') || message.toLowerCase().includes('genres')) {
+                        addMessage("We have a wide variety of genres including Pop, Rock, Hip Hop, R&B, Electronic, Jazz, Classical, and more. Which genre would you like to explore?");
+                    } else {
+                        addMessage("I'm here to help with music recommendations, lyrics, and genre information. How can I assist you?");
+                    }
+                }, 1000);
+            }
+        });
+
+        chatbotInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage.click();
+            }
+        });
+
+        // Genre pills click event
+        document.querySelectorAll('.genre-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                const genre = this.textContent;
+                addMessage(`Show me ${genre} songs`, true);
+                
+                setTimeout(() => {
+                    if (genre === 'Pop') {
+                        addMessage(`Here are some popular ${genre} songs: 'Dance Monkey' by Tones and I, 'Watermelon Sugar' by Harry Styles, and 'Don't Start Now' by Dua Lipa.`);
+                    } else if (genre === 'Rock') {
+                        addMessage(`Here are some classic ${genre} songs: 'Sweet Child O' Mine' by Guns N' Roses, 'Bohemian Rhapsody' by Queen, and 'Smells Like Teen Spirit' by Nirvana.`);
+                    } else if (genre === 'Hip Hop') {
+                        addMessage(`Here are some trending ${genre} tracks: 'SICKO MODE' by Travis Scott, 'God's Plan' by Drake, and 'HUMBLE.' by Kendrick Lamar.`);
+                    } else {
+                        addMessage(`Here are some popular ${genre} songs you might enjoy. Would you like recommendations for specific artists or time periods?`);
+                    }
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js" defer></script>
+<script src="https://files.bpcontent.cloud/2025/04/17/07/20250417070657-UDMZICJX.js" defer></script>
